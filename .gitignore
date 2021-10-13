@@ -5,5 +5,4 @@ npm-debug.log
 .code/
 
 #rust
-*/target/
-
+/target
