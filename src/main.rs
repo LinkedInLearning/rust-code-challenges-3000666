@@ -1,18 +1,5 @@
 fn median(a: Vec<f32>) -> Option<f32> {
-  if a.is_empty() {
-    return None;
-  }
- 
-  let n_elements = a.len();
-  let middle = n_elements / 2;
- 
-  let med = if n_elements % 2 == 0 {
-    (a[middle] + a[middle - 1]) / 2.0
-  } else {
-    a[middle]
-  };
- 
-  Some(med)
+  todo!();
 }
 
 
