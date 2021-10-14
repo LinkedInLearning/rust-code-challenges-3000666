@@ -1,5 +1,5 @@
 fn median(a: Vec<f32>) -> Option<f32> {
-  todo!();
+    todo!();
 }
 
 
@@ -20,10 +20,25 @@ fn empty_input() {
     assert_eq!(actual_output, expected_output);
 }
 
+#[test]
+fn sorted() {
+    let input = vec![1.0, 4.0, 5.0];
+    let expected_output = Some(4.0);
+    let actual_output = median(input);
+    assert_eq!(actual_output, expected_output);
+}
 
 #[test]
-fn one_two_five() {
-    let input = vec![1.0, 2.0, 5.0];
+fn even_length() {
+    let input = vec![1.0, 3.0, 5.0, 6.0];
+    let expected_output = Some(4.0);
+    let actual_output = median(input);
+    assert_eq!(actual_output, expected_output);
+}
+
+#[test]
+fn unsorted_list() {
+    let input = vec![1.0, 5.0, 2.0];
     let expected_output = Some(2.0);
     let actual_output = median(input);
     assert_eq!(actual_output, expected_output);
