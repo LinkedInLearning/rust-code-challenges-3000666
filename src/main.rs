@@ -43,7 +43,7 @@ fn sorted_list() {
 #[test]
 fn unsorted_list() {
     let input = vec![1, 5, 2];
-    let expected_output = vec![1, 5, 2];
+    let expected_output = vec![1, 2, 5];
     let actual_output = unique(input);
     assert_eq!(actual_output, expected_output);
 }
@@ -52,7 +52,7 @@ fn unsorted_list() {
 #[test]
 fn unsorted_list_with_duplicates() {
     let input = vec![1, 5, 2, 2, 1];
-    let expected_output = vec![1, 5, 2];
+    let expected_output = vec![1, 2, 5];
     let actual_output = unique(input);
     assert_eq!(actual_output, expected_output);
 }
