@@ -9,7 +9,7 @@ fn main() {
 }
 
 #[test]
-fn empty_input() {
+fn empty_list() {
     let input = vec![];
     let expected_output = None;
     let actual_output = median(input);
@@ -17,7 +17,7 @@ fn empty_input() {
 }
 
 #[test]
-fn sorted() {
+fn sorted_list() {
     let input = vec![1.0, 4.0, 5.0];
     let expected_output = Some(4.0);
     let actual_output = median(input);
