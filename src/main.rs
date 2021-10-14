@@ -2,15 +2,11 @@ fn median(a: Vec<f32>) -> Option<f32> {
     todo!();
 }
 
-
 fn main() {
     let answer = median(vec![1.0, 2.0, 5.0]);
 
     println!("median([1,2,5]) = {:?}", answer);
 }
-
-
-
 
 #[test]
 fn empty_input() {
