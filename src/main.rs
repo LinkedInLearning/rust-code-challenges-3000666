@@ -1,7 +1,9 @@
-fn median(a: Vec<f32>) -> Option<f32> {
+fn median(mut a: Vec<f32>) -> Option<f32> {
   if a.is_empty() {
     return None;
   }
+
+  a.sort_by(|x,y| x.partial_cmp(y).unwrap());
  
   let n_elements = a.len();
   let middle = n_elements / 2;
