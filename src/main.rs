@@ -1,5 +1,5 @@
 fn sort_usernames<T: AsRef<str>>(usernames: &mut Vec<T>) {
-    usernames.sort_by_cached_key(|x| x.as_ref().to_lowercase());
+    todo!();
 }
 
 fn main() {
