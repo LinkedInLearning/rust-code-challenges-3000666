@@ -1,6 +1,6 @@
-# Rust Code Challenges: Challenge 3
+# Rust Code Challenges: Challenge 4
 
-Your challenge is to implement a function, `info()`, that can take any text type and print its contents to the console.
+Your challenge is to implement a function, sort_usernames(), that takes a reference vector of strings as its input argument and sorts it in-place.
 
 ## Testing your code
 

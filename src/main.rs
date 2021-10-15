@@ -1,54 +1,20 @@
-fn info(a: &T) {
-    todo!();
+fn sort_usernames<T: AsRef<str>>(usernames: &mut Vec<T>) {
+    usernames.sort_by_cached_key(|x| x.as_ref().to_lowercase());
 }
 
 fn main() {
-    let a = "?";
-    let b = "?".to_string();
-    info(&a);
-    info(&b);
+    let mut users = vec!["Todd", "Amy", "mike99", "Jennifer", "alison"];
 
-    // Advanced 1
-    // use std::ffi::CString;
-    
-    // let c = CString::new("?").unwrap();
-    // info(&input);
-
-    // Advanced 2
-    // use std::path::Path;
-    // let d = Path::new("/tmp/linkedin-learning");
-    // info(d);
-}
-
-
-#[test]
-fn str() {
-    let input = "Rust";
-    info(&input);
+    println!("unsorted: {:?}", &users);
+    sort_usernames(&mut users);
+    println!("sorted:   {:?}", &users);
 }
 
 #[test]
-fn string() {
-    let input = String::from("Rust");
-    info(&input);
+fn five_users() {
+    let mut users = vec!["Todd", "Amy", "mike99", "Jennifer", "alison"];
+    let sorted = vec!["alison", "Amy", "Jennifer", "mike99", "Todd"];
+    sort_usernames(&mut users);
+
+    assert_eq!(users, sorted);
 }
-
-// #[test]
-// fn chars() {
-//     let input = 'r';
-//     info(&input);
-// }
-
-// #[test]
-// fn cstring() {
-//     use std::ffi::{CString};
-//     let input = CString::new("Rust").unwrap();
-//     info(&input);
-// }
-
-// #[test]
-// fn path() {
-//     use std::path::Path;
-//     let input = Path::new("/tmp/rust");
-//     info(input);
-// }
