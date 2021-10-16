@@ -4,5 +4,9 @@ node_modules
 npm-debug.log
 .code/
 
+# ide
+.vscode/
+.idea/
+
 #rust
 /target
