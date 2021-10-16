@@ -1,6 +1,14 @@
-# Rust Code Challenges: Challenge 4
+# Rust Code Challenges: Challenge 6
 
-Your challenge is to implement a function, sort_usernames(), that takes a reference vector of strings as its input argument and sorts it in-place.
+Your challenge is to implement code that calculates the
+value of a hand of cards for the game of blackjack.
+
+Cards have the following values:
+
+- Cards **2** to **10** have a value equal to their number
+- Face cards (the King, Queen and Jack) have a value of 10
+- The **Ace** has a value of 11, unless the total value of
+  the hand exceeds 21. If that happens, the card's value is 1.
 
 ## Testing your code
 

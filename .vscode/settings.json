@@ -1,4 +1,7 @@
 {
     "editor.fontSize": 24,
-    "terminal.integrated.fontSize": 22
+    "terminal.integrated.fontSize": 22,
+    "editor.wrappingIndent": "indent",
+    "editor.wordWrapColumn": 60,
+    "editor.wordWrap": "bounded"
 }

@@ -1,49 +1,86 @@
+#![allow(dead_code)]
+
 #[derive(Debug, PartialEq)]
-enum Pulse {
-    Short,
-    Long,
+enum Card {
+    Ace,
+    Two,
+    Three,
+    Four,
+    Five,
+    Six,
+    Seven,
+    Eight,
+    Nine,
+    Jack,
+    Queen,
+    King,
 }
 
-/// Represents a single character
-type Letter = Vec<Pulse>;
+struct Hand {
+    cards: Vec<Card>,
+}
 
-/// Represents a string of characters
-type Message = Vec<Letter>;
+impl Hand {
+    fn new() -> Self {
+        Hand {
+            cards: vec![],
+        }
+    }
 
-trait MorseCode {
-    fn to_morse_code(&self) -> Message;
+    fn add(&mut self, card: Card) {
+        self.cards.push(card);
+    }
+
+    fn value(&self) -> usize {
+        // TODO: implement this method
+        0 
+    }
+
+    fn is_loosing_hand(&self) -> bool {
+        self.value() > 21
+    }
 }
 
 fn main() {
-    let greeting = "Hello, world".to_string().to_morse_code();
-    println!("{:?}", greeting)
+    let mut hand = Hand::new();
+    hand.add(Card::King);
+    hand.add(Card::Ace);
+}
+
+
+#[test]
+fn empty_hand() {
+    let hand = Hand::new();
+
+    assert_eq!(hand.value(), 0);
 }
 
 #[test]
-fn hello_world() {
-    use Pulse::*;
+fn strong_hand() {
+    let mut hand = Hand::new();
+    hand.add(Card::Queen);
+    hand.add(Card::Ace);
 
-    let expected = vec![
-        vec![Short, Short, Short, Short, Short],
-        vec![Short],
-        vec![Short, Long, Short, Short],
-        vec![Short, Long, Short, Short],
-        vec![Long, Long, Long],
-        vec![Short, Long, Long],
-        vec![Long, Long, Long],
-        vec![Short, Long, Short],
-        vec![Short, Long, Short, Short],
-        vec![Long, Short, Short],
-    ];
-
-    let actual = "Hello, world".to_string().to_morse_code();
-    assert_eq!(actual, expected);
+    assert_eq!(hand.value(), 21);
 }
 
 #[test]
-fn whole_alphabet() {
-    let alphabet = "abcdefghijklmnopqrstuvwxyz1234567890".to_string();
+fn risky_hand() {
+    let mut hand = Hand::new();
+    hand.add(Card::King);
+    hand.add(Card::Queen);
+    hand.add(Card::Ace);
+    
+    assert_eq!(hand.value(), 21);
+}
 
-    alphabet.to_morse_code();
-    alphabet.to_uppercase().to_morse_code();
+#[test]
+fn oops() {
+    let mut hand = Hand::new();
+    hand.add(Card::King);
+    hand.add(Card::Seven);
+    hand.add(Card::Five);
+    
+    assert!(hand.is_loosing_hand());
+    assert_eq!(hand.value(), 22);
 }
