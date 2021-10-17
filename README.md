@@ -1,18 +1,10 @@
-# Rust Code Challenges: Challenge 7
+# Rust Code Challenges: Challenge 8
 
-Your challenge is to implement two functions that
-handle time. 
+Your challenge is to implement code to convert between two temperature 
+scales: celsius and fahrenheit. 
 
-This challenge uses the 3rd party `time` crate, rather
-than the standard library. The 3rd party crate provides
-some richness that the standard libary's `std::time` 
-module does not.
-
-- `parse_date()` takes a string as input and returns
-  a `time::Date`
-- `weeks_between() takes two dates as an argument and
-  returns the number of whole weeks
-
+To make this more challenging than implementing the mathematical formula,
+you will need to work with an intermediate type that encodes the temperature.
 
 ## Testing your solution
 
