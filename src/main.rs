@@ -3,14 +3,11 @@ use time::Date;
 use time::error::Parse;
 
 fn parse_date(text: &str) -> Result<Date, Parse> {
-    let desc = time::format_description::parse("[year]-[month]-[day]").unwrap();
-
-    Date::parse(text, &desc)
+    todo!();
 }
 
-fn weeks_between(d1: Date, d2: Date) -> i64 {
-    let diff = d2 - d1;
-    diff.whole_days() / 7
+fn weeks_between(earlier: Date, later: Date) -> i64 {
+    todo!();
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -23,7 +20,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let start = format!("{}-01-01", decade);
         let end = format!("{}-12-31", decade+9);
         let dates = (parse_date(&start)?, parse_date(&end)?);
-        let weeks = weeks_between(dates.0, dates.1);
+        let weeks = weeks_between(-dates.0, dates.1);
 
         println!("{} and {}: {}", decade, decade+10, weeks);
 
