@@ -1,5 +1,5 @@
 fn sum(numbers: Vec<Option<i32>>) -> i32 {
-    numbers.iter().map(|x| x.unwrap_or(0)).sum()
+    todo!();
 }
 
 fn main() {
