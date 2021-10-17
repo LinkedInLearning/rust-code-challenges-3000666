@@ -12,4 +12,10 @@ Use `cargo test` to evaluate yourself:
 ```console
 $ cargo test
 ...
+running 4 tests
+test all_missing ... ok
+test no_missing ... ok
+test empty ... ok
+test some_missing ... ok
+...
 ```
