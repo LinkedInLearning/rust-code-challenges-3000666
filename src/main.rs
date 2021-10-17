@@ -1,61 +1,32 @@
-#![allow(unused)]
-
-enum Scale {
-    Celsius,
-    Fahrenheit,
-}
-
-struct Temperature {
-    degrees: f32,
-    scale: Scale,
-}
-
-impl Temperature {
-    fn new(degrees: f32) -> Self {
-        Temperature {
-            degrees,
-            scale: Scale::Celsius,
-        }
-    }
-
-    fn to_celsius(&self) -> f32 {
-        todo!();
-    }
-
-    fn to_fahrenheit(&self) -> f32 {
-        todo!();
-    }
+fn sum(numbers: Vec<Option<i32>>) -> i32 {
+    numbers.iter().map(|x| x.unwrap_or(0)).sum()
 }
 
 fn main() {
-    let temp = Temperature::new(20.0);
+    println!("");
+}
 
-    println!("fun fact: 20°C is an integer in celsius and fahrenheit");
-    println!("          {:.1}°C = {:.1}°F", temp.to_celsius(), temp.to_fahrenheit());
+
+#[test]
+fn empty() {
+    let nn = vec![];
+    assert_eq!(sum(nn), 0);
 }
 
 #[test]
-fn one_degree() {
-    let cold = Temperature::new(1.0);
-    assert!((cold.to_fahrenheit() - 33.8) < 0.01);
-    assert!((cold.to_fahrenheit() - 33.8) >= 0.0);
+fn no_missing() {
+    let nn = vec![Some(1), Some(5), Some(4)];
+    assert_eq!(sum(nn), 10);
 }
 
 #[test]
-fn boiling() {
-    let hot = Temperature::new(100.0);
-    assert!((hot.to_fahrenheit() - 212.0) < 0.01);
-    assert!((hot.to_fahrenheit() - 212.0) >= 0.0);
+fn some_missing() {
+    let nn = vec![None, Some(1), Some(5), Some(4), None, None];
+    assert_eq!(sum(nn), 10);
 }
 
 #[test]
-fn freezing() {
-    let freezing = Temperature {
-        degrees: Temperature::new(0.0).to_fahrenheit(),
-        scale: Scale::Fahrenheit,
-    };
-
-    assert!(freezing.to_celsius() < 0.001);
-    assert!(freezing.to_celsius() > -0.01);
+fn all_missing() {
+    let nn = vec![None, None, None];
+    assert_eq!(sum(nn), 0);
 }
-

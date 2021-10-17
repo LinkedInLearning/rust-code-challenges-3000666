@@ -1,10 +1,9 @@
-# Rust Code Challenges: Challenge 8
+# Rust Code Challenges: Challenge 9
 
-Your challenge is to implement code to convert between two temperature 
-scales: celsius and fahrenheit. 
+Your challenge is to implement a function that can sum lists of integers
+that include missing values. This may occur during parsing user input,
+for example when extracting values from CSV files.
 
-To make this more challenging than implementing the mathematical formula,
-you will need to work with an intermediate type that encodes the temperature.
 
 ## Testing your solution
 
