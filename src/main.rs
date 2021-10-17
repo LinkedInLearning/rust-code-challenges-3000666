@@ -1,5 +1,5 @@
 fn sum(numbers: Vec<Option<i32>>) -> i32 {
-    todo!();
+    todo!()
 }
 
 fn main() {
