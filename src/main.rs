@@ -13,7 +13,7 @@ trait Deadline {
 
 impl Deadline for ImportantEvent {
     fn is_passed(&self) -> bool {
-        self.when < Local::today()
+        todo!();
     }
 }
 
