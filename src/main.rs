@@ -1,41 +1,52 @@
-use time;
-use time::Date;
-use time::error::Parse;
+// use time::{Date, Month, Instant, Duration};
+use chrono::{Duration, TimeZone};
+use chrono::{Date, Local};
 
-fn parse_date(text: &str) -> Result<Date, Parse> {
-    let desc = time::format_description::parse("[year]-[month]-[day]").unwrap();
-
-    Date::parse(text, &desc)
+struct ImportantEvent {
+    what: String,
+    when: Date<Local>,
 }
 
-fn weeks_between(d1: Date, d2: Date) -> i64 {
-    let diff = d2 - d1;
-    diff.whole_days() / 7
+trait Deadline {
+    fn is_passed(&self) -> bool;
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let decades = (1900..)
-        .step_by(10)
-        .take_while(|x| *x < 2100);
-    
-    println!("weeks between:");
-    for decade in decades {
-        let start = format!("{}-01-01", decade);
-        let end = format!("{}-12-31", decade+9);
-        let dates = (parse_date(&start)?, parse_date(&end)?);
-        let weeks = weeks_between(dates.0, dates.1);
-
-        println!("{} and {}: {}", decade, decade+10, weeks);
-
+impl Deadline for ImportantEvent {
+    fn is_passed(&self) -> bool {
+        self.when < Local::today()
     }
+}
 
-    Ok(())
+fn main() {
+    let missed_christmas = ImportantEvent {
+        what: String::from("Christmas"),
+        when: Local.ymd(2020, 12, 25),
+    };
+    
+    if missed_christmas.is_passed() {
+        println!("oh well, maybe next year");
+    } else {
+        println!("☃︎");
+    }
 }
 
 #[test]
-fn one_week() {
-    let t1 = parse_date("2010-01-01").unwrap();
-    let t2 = parse_date("2010-01-08").unwrap();
-    assert_eq!(weeks_between(t1, t2), 1);
+fn in_past() {
+    let event = ImportantEvent {
+        what: String::from("friend's birthday"),
+        when: Local::today() - Duration::hours(25),
+    };
+
+    assert!(event.is_passed())
+}
+
+#[test]
+fn in_future() {
+    let event = ImportantEvent {
+        what: String::from("friend's birthday"),
+        when: Local::today() + Duration::hours(25),
+    };
+
+    assert!(!event.is_passed())
 }
 
