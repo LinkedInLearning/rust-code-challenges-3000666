@@ -1,18 +1,22 @@
-# Rust Code Challenges: Challenge 6
+# Rust Code Challenges: Challenge 7
 
-Your challenge is to implement code that calculates the
-value of a hand of cards for the game of blackjack.
+Your challenge is to implement two functions that
+handle time. 
 
-Cards have the following values:
+This challenge uses the 3rd party `time` crate, rather
+than the standard library. The 3rd party crate provides
+some richness that the standard libary's `std::time` 
+module does not.
 
-- Cards **2** to **10** have a value equal to their number
-- Face cards (the King, Queen and Jack) have a value of 10
-- The **Ace** has a value of 11, unless the total value of
-  the hand exceeds 21. If that happens, the card's value is 1.
+- `parse_date()` takes a string as input and returns
+  a `time::Date`
+- `weeks_between() takes two dates as an argument and
+  returns the number of whole weeks
 
-## Testing your code
 
-To test your solution, use `cargo test`.
+## Testing your solution
+
+Use `cargo test` to evaluate yourself:
 
 ```console
 $ cargo test

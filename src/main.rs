@@ -1,112 +1,41 @@
-#![allow(dead_code)]
+use time;
+use time::Date;
+use time::error::Parse;
 
-#[derive(Debug, PartialEq)]
-enum Card {
-    Ace,
-    Two,
-    Three,
-    Four,
-    Five,
-    Six,
-    Seven,
-    Eight,
-    Nine,
-    Jack,
-    Queen,
-    King,
+fn parse_date(text: &str) -> Result<Date, Parse> {
+    let desc = time::format_description::parse("[year]-[month]-[day]").unwrap();
+
+    Date::parse(text, &desc)
 }
 
-struct Hand {
-    cards: Vec<Card>,
+fn weeks_between(d1: Date, d2: Date) -> i64 {
+    let diff = d2 - d1;
+    diff.whole_days() / 7
 }
 
-impl Hand {
-    fn new() -> Self {
-        Hand { cards: vec![] }
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let decades = (1900..)
+        .step_by(10)
+        .take_while(|x| *x < 2100);
+    
+    println!("weeks between:");
+    for decade in decades {
+        let start = format!("{}-01-01", decade);
+        let end = format!("{}-12-31", decade+9);
+        let dates = (parse_date(&start)?, parse_date(&end)?);
+        let weeks = weeks_between(dates.0, dates.1);
+
+        println!("{} and {}: {}", decade, decade+10, weeks);
+
     }
 
-    fn add(&mut self, card: Card) {
-        self.cards.push(card);
-    }
-
-    fn value(&self) -> usize {
-        use Card::*;
-
-        let mut subtotal = 0;
-        let mut aces_seen = 0;
-
-        for card in self.cards.iter() {
-            subtotal += match card {
-                Ace => {
-                    aces_seen += 1;
-                    0
-                },
-                Two => 2,
-                Three => 3,
-                Four => 4,
-                Five => 5,
-                Six => 6,
-                Seven => 7,
-                Eight => 8,
-                Nine => 9,
-                Jack => 10,
-                Queen => 10,
-                King => 10,
-            };
-        }
-
-        for _ in 0..aces_seen {
-            let ace_value = if subtotal <= 10 { 11 } else { 1 };
-            subtotal += ace_value;
-        }
-
-        subtotal
-    }
-
-    fn is_loosing_hand(&self) -> bool {
-        self.value() > 21
-    }
-}
-
-fn main() {
-    let mut hand = Hand::new();
-    hand.add(Card::King);
-    hand.add(Card::Ace);
+    Ok(())
 }
 
 #[test]
-fn empty_hand() {
-    let hand = Hand::new();
-
-    assert_eq!(hand.value(), 0);
+fn one_week() {
+    let t1 = parse_date("2010-01-01").unwrap();
+    let t2 = parse_date("2010-01-08").unwrap();
+    assert_eq!(weeks_between(t1, t2), 1);
 }
 
-#[test]
-fn strong_hand() {
-    let mut hand = Hand::new();
-    hand.add(Card::Queen);
-    hand.add(Card::Ace);
-
-    assert_eq!(hand.value(), 21);
-}
-
-#[test]
-fn risky_hand() {
-    let mut hand = Hand::new();
-    hand.add(Card::King);
-    hand.add(Card::Queen);
-    hand.add(Card::Ace);
-
-    assert_eq!(hand.value(), 21);
-}
-
-#[test]
-fn oops() {
-    let mut hand = Hand::new();
-    hand.add(Card::King);
-    hand.add(Card::Seven);
-    hand.add(Card::Five);
-
-    assert!(hand.is_loosing_hand());
-    assert_eq!(hand.value(), 22);
-}

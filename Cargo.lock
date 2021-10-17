@@ -3,5 +3,23 @@
 version = 3
 
 [[package]]
-name = "rust-code-challenge-6"
+name = "libc"
+version = "0.2.104"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7b2f96d100e1cf1929e7719b7edb3b90ab5298072638fccd77be9ce942ecdfce"
+
+[[package]]
+name = "rust-code-challenge-7"
 version = "0.0.0"
+dependencies = [
+ "time",
+]
+
+[[package]]
+name = "time"
+version = "0.3.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cde1cf55178e0293453ba2cca0d5f8392a922e52aa958aee9c28ed02becc6d03"
+dependencies = [
+ "libc",
+]

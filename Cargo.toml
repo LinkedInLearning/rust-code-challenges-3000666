@@ -1,6 +1,10 @@
 [package]
-name = "rust-code-challenge-6"
+name = "rust-code-challenge-7"
 version = "0.0.0"
 edition = "2018"
 
 [dependencies]
+
+[dependencies.time]
+version = "0.3"
+features = ["parsing"]
