@@ -1,8 +1,7 @@
-# Rust Code Challenges: Challenge 9
+# Rust Code Challenges: Challenge 11
 
-Your challenge is to implement a function that can sum lists of integers
-that include missing values. This may occur during parsing user input,
-for example when extracting values from CSV files.
+Your challenge is to implement a code that
+can parse and validate an ISBN-13 number.
 
 
 ## Testing your solution
