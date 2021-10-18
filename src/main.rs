@@ -4,13 +4,25 @@ use std::str::FromStr;
 #[derive(Debug, PartialEq)]
 struct Rgb; // TODO: design data structure
 
+trait RgbChannels {
+    fn r(&self) -> u8;
+
+    fn g(&self) -> u8;
+
+    fn b(&self) -> u8;
+}
+
+impl RgbChannels for Rgb {
+    // TODO: implement trait
+}
+
 impl FromStr for Rgb {
     // TODO: implement trait
 }
 
 impl Display for Rgb {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "#{:02x}{:02x}{:02x}", self.r, self.g, self.b)
+        write!(f, "#{:02x}{:02x}{:02x}", self.r(), self.g(), self.b())
     }
 }
 
