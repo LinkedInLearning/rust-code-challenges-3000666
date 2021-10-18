@@ -1,70 +1,49 @@
-mod run_length_encoding {
-    pub fn encode(text: &str) -> String {
-        let mut count = 0; 
-        let mut prev : Option<char> = None;
-        let mut encoded = String::with_capacity(text.len()/2);
-        let mut chars = text.chars();
-    
-        while let Some(c) = chars.next() {
-            if prev.is_none() {
-                prev = Some(c);
-            }
-    
-            if prev.unwrap() != c || count == 9 {
-                encoded.push_str(&format!("{}{}", count, prev.unwrap()));
-                count = 0
-            }
-            prev = Some(c);
-            count += 1;
-        }
-    
-        // protect against empty string
-        if let Some(prev) = prev {
-            encoded.push_str(&format!("{}{}", count, prev));
-        }
-        encoded
-    }
-    
-    pub fn decode(text: &str) -> String {
-        let mut decoded = String::with_capacity(text.len() * 2);
-        let mut chars = text.chars();
+use chrono::{Local, NaiveDate, TimeZone};
 
-        while let (Some(n), Some(c)) = (chars.next(), chars.next()) {
-            
-            let n = n.to_digit(10).unwrap();
-            for _ in 0..n {
-                decoded.push(c);
-            }
-        }
-
-        decoded
-    }
+/// Parses a string that represents a date. When a date
+/// is unable to be determined, return `None`. 
+fn flexible_date_parse(text: &str) -> Option<NaiveDate> {
+    todo!();
 }
 
 fn main() {
-    //
+    let dates = [
+        "2010-12-11",
+        "1999/Mar/02",
+        "01.Mar.2021",
+        "Mar.05.2021",
+        "not a date",
+    ];
+
+    for d in dates.iter() {
+        println!("{} -> {:?}", d, flexible_date_parse(d));
+    }
+
 }
 
 #[test]
-fn abc() {
-    use run_length_encoding::*;
-
-    assert_eq!(encode("abc"), "1a1b1c");
+fn ymd_hyphen() {
+    assert_eq!(flexible_date_parse("2010-12-11"), Some(NaiveDate::from_ymd(2010, 12, 11)))
 }
 
 #[test]
-fn round_trip() {
-    use run_length_encoding::*;
-
-    let input = "LinkedIn";
-    assert_eq!(decode(&encode(input)), input);
+fn ymd_slash() {
+    assert_eq!(flexible_date_parse("1999/Mar/02"), Some(NaiveDate::from_ymd(1999, 3, 2)))
 }
 
 #[test]
-fn long_run() {
-    use run_length_encoding::*;
-
-    let input = "AAAAA AAAAAAAAAA AAAAAAAAAAAAAAAAAAAA";
-    assert_eq!(encode(input), "5A1 9A1A1 9A9A2A");
+fn dmy_dot() {
+    assert_eq!(flexible_date_parse("01.Mar.2021"), Some(NaiveDate::from_ymd(2021, 3, 1)))
 }
+
+#[test]
+fn mdy_dot() {
+    assert_eq!(flexible_date_parse("Apr.05.2021"), Some(NaiveDate::from_ymd(2021, 4, 5)))
+}
+
+#[test]
+fn invalid() {
+    assert_eq!(flexible_date_parse("not a date"), None)
+}
+
 
