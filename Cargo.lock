@@ -96,7 +96,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust-code-challenge-11"
+name = "rust-code-challenge-12"
 version = "0.0.0"
 dependencies = [
  "tempfile",

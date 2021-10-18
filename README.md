@@ -11,4 +11,8 @@ Use `cargo test` to evaluate yourself:
 ```console
 $ cargo test
 ...
+running 2 tests
+test read_only ... ok
+test writeable ... ok
+...
 ```
