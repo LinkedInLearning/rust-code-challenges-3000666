@@ -12,8 +12,12 @@ Use `cargo test` to evaluate yourself:
 ```console
 $ cargo test
 ...
-running 2 tests
-test read_only ... ok
-test writeable ... ok
+running 6 tests
+test no_leading_hash - should panic ... ok
+test invalid_literals - should panic ... ok
+test not_a_hex_code - should panic ... ok
+test out_of_bounds - should panic ... ok
+test too_short - should panic ... ok
+test every_color ... ok
 ...
 ```

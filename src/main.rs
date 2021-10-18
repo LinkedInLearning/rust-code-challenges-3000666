@@ -16,6 +16,28 @@ struct Rgb {
     b: u8,
 }
 
+trait RgbChannels {
+    fn r(&self) -> u8;
+
+    fn g(&self) -> u8;
+
+    fn b(&self) -> u8;
+}
+
+impl RgbChannels for Rgb {
+    fn r(&self) -> u8 {
+        self.r
+    }
+
+    fn g(&self) -> u8 {
+        self.g
+    }
+
+    fn b(&self) -> u8 {
+        self.b
+    }
+}
+
 impl FromStr for Rgb {
     type Err = ParseColorError;
 
@@ -38,7 +60,7 @@ impl FromStr for Rgb {
 
 impl Display for Rgb {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "#{:02x}{:02x}{:02x}", self.r, self.g, self.b)
+        write!(f, "#{:02x}{:02x}{:02x}", self.r(), self.g(), self.b())
     }
 }
 
