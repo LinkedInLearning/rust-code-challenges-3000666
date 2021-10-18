@@ -91,24 +91,5 @@ fn can_correctly_calculate_check_digits() {
 
 #[test]
 fn rust_in_action() {
-    let book: Isbn = "978-3-16-148410-0".parse().unwrap();
-    assert!(book.is_valid());
+    let _: Isbn = "978-3-16-148410-0".parse().unwrap();
 }
-
-// #[test]
-// fn no_missing() {
-//     let nn = vec![Some(1), Some(5), Some(4)];
-//     assert_eq!(sum(nn), 10);
-// }
-
-// #[test]
-// fn some_missing() {
-//     let nn = vec![None, Some(1), Some(5), Some(4), None, None];
-//     assert_eq!(sum(nn), 10);
-// }
-
-// #[test]
-// fn all_missing() {
-//     let nn = vec![None, None, None];
-//     assert_eq!(sum(nn), 0);
-// }

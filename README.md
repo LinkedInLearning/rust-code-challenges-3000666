@@ -11,4 +11,8 @@ Use `cargo test` to evaluate yourself:
 ```console
 $ cargo test
 ...
+running 2 tests
+test rust_in_action ... ok
+test can_correctly_calculate_check_digits ... ok
+...
 ```
