@@ -15,7 +15,8 @@ Use `cargo test` to evaluate yourself:
 ```console
 $ cargo test
 ...
-running 2 tests
+running 3 tests
+test long_run ... ok
 test abc ... ok
 test round_trip ... ok
 ...
