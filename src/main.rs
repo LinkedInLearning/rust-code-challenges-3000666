@@ -1,16 +1,10 @@
-use std::fmt::Display;
-use std::str::FromStr;
-
-#[derive(Debug, PartialEq)]
-struct Rgb; // TODO: design data structure
-
-impl FromStr for Rgb {
-    // TODO: implement trait
-}
-
-impl Display for Rgb {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "#{:02x}{:02x}{:02x}", self.r, self.g, self.b)
+mod run_length_encoding {
+    pub fn encode(text: &str) -> String {
+        todo!()
+    }
+    
+    pub fn decode(text: &str) -> String {
+        todo!()
     }
 }
 
@@ -19,43 +13,17 @@ fn main() {
 }
 
 #[test]
-fn every_color() {
-    let colors = (0_u8..255).zip(0_u8..255).zip(0_u8..255);
+fn abc() {
+    use run_length_encoding::*;
 
-    for ((r, g), b) in colors {
-        let hex = format!("#{:02x}{:02x}{:02x}", r, g, b);
-        let color: Rgb = hex.parse().unwrap();
-        assert_eq!(hex, format!("{}", color));
-    }
+    assert_eq!(encode("abc"), "1a1b1c");
 }
 
 #[test]
-#[should_panic]
-fn too_short () {
-    let _: Rgb = "1234".parse().unwrap();
-}
+fn round_trip() {
+    use run_length_encoding::*;
 
-#[test]
-#[should_panic]
-fn not_a_hex_code () {
-    let _: Rgb = "?".parse().unwrap();
-}
-
-#[test]
-#[should_panic]
-fn invalid_literals () {
-    let _: Rgb = "?".parse().unwrap();
-}
-
-#[test]
-#[should_panic]
-fn no_leading_hash() {
-    let _: Rgb = "aabbcc".parse().unwrap();
-}
-
-#[test]
-#[should_panic]
-fn out_of_bounds() {
-    let _: Rgb = "00gg00".parse().unwrap();
+    let input = "LinkedIn";
+    assert_eq!(decode(&encode(input)), input);
 }
 
