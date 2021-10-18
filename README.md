@@ -1,7 +1,8 @@
-# Rust Code Challenges: Challenge 12
+# Rust Code Challenges: Challenge 13
 
-Your challenge is to extend the `std::path::Path` type
-with an `is_writeable()` method.
+Your challenge is to create a representation for CSS and HTML 
+color codes, e.g. #RRGGBB, and implement `std::fmt::FromStr` for that
+type so that it can be parsed.
 
 
 ## Testing your solution
