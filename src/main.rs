@@ -1,4 +1,3 @@
-use std::fs;
 use std::path;
 
 trait Writeable {
@@ -7,9 +6,7 @@ trait Writeable {
 
 impl Writeable for path::Path {
     fn is_writeable(&self) -> bool {
-        fs::metadata(self)
-            .map(|m| !m.permissions().readonly())
-            .unwrap_or(false)
+        todo!();
     }
 }
 
@@ -19,6 +16,7 @@ fn main() {
 
 #[test]
 fn writeable() {
+    use std::fs;
     use tempfile;
 
     let f = tempfile::NamedTempFile::new().unwrap();
@@ -29,6 +27,7 @@ fn writeable() {
 
 #[test]
 fn read_only() {
+    use std::fs;
     use tempfile;
 
     let f = tempfile::NamedTempFile::new().unwrap();
