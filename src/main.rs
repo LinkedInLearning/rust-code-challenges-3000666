@@ -5,44 +5,11 @@ struct Isbn {
     digits: Vec<u8>,
 }
 
-#[derive(Debug)]
-enum InvalidIsbn {
-    TooLong,
-    TooShort,
-    InvalidCharacter(usize, char),
-    FailedChecksum,
-}
-
 impl FromStr for Isbn {
-    type Err = InvalidIsbn;
+    type Err = (); // TODO: replace with appropriate type
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut digits = vec![];
-
-        for (i, c) in s.char_indices() {
-            match c {
-                '-' => continue,
-                '0'..='9' => digits.push(c.to_digit(10).unwrap() as u8),
-                _ => {
-                    return Err(InvalidIsbn::InvalidCharacter(i, c));
-                }
-            }
-        }
-
-        if digits.len() < 13 {
-            return Err(InvalidIsbn::TooShort);
-        } else if digits.len() > 13 {
-            return Err(InvalidIsbn::TooLong);
-        };
-
-        if digits[12] != calculate_check_digit(&digits) {
-            return Err(InvalidIsbn::FailedChecksum);
-        }
-
-        Ok(Isbn {
-            digits,
-            raw: s.to_string(),
-        })
+        todo!();        
     }
 }
 
@@ -54,19 +21,7 @@ impl std::fmt::Display for Isbn {
 
 // https://en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-13_check_digit_calculation
 fn calculate_check_digit(digits: &[u8]) -> u8 {
-    const WEIGHTS: [u8; 12] = [1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3];
-
-    let check: u32 = digits
-        .iter()
-        .zip(WEIGHTS.iter())
-        .map(|(&x, &y)| x * y)
-        .map(|x| x as u32)
-        .sum();
-
-    match 10 - (check % 10) {
-        10 => 0_u8,
-        m => m as u8,
-    }
+    todo!()
 }
 
 fn main() {
@@ -91,24 +46,5 @@ fn can_correctly_calculate_check_digits() {
 
 #[test]
 fn rust_in_action() {
-    let book: Isbn = "978-3-16-148410-0".parse().unwrap();
-    assert!(book.is_valid());
+    let _: Isbn = "978-3-16-148410-0".parse().unwrap();
 }
-
-// #[test]
-// fn no_missing() {
-//     let nn = vec![Some(1), Some(5), Some(4)];
-//     assert_eq!(sum(nn), 10);
-// }
-
-// #[test]
-// fn some_missing() {
-//     let nn = vec![None, Some(1), Some(5), Some(4), None, None];
-//     assert_eq!(sum(nn), 10);
-// }
-
-// #[test]
-// fn all_missing() {
-//     let nn = vec![None, None, None];
-//     assert_eq!(sum(nn), 0);
-// }
