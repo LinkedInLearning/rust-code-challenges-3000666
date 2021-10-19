@@ -1,130 +1,131 @@
-use chrono::{Local, NaiveDate, TimeZone};
-use std::collections::HashMap;
+use std::cmp::Ordering;
+use std::collections::{BinaryHeap, HashMap, HashSet};
+use std::hash::Hash;
 
-fn is_year(field: &str) -> bool {
-    field.len() == 4 && field.chars().all(|x| x.is_ascii_digit())
+// derived from the implementation provided at 
+// https://doc.rust-lang.org/alloc/collections/binary_heap/index.html
+
+type Node = usize;
+type Cost = usize;
+
+struct Graph {
+    edges: HashMap<Node, Vec<(Node, Cost)>>,
+    nodes: HashSet<Node>,
 }
 
+impl Graph {
+    fn from_edge_list(edge_list: &Vec<(Node, Node, Cost)>) -> Self {
+        let mut adjacency_list: HashMap<Node, Vec<(Node, Cost)>> = HashMap::new();
+        let mut nodes = HashSet::new();
 
+        for &(source, destination, cost) in edge_list.iter() {
+            let destinations = adjacency_list
+                .entry(source)
+                .or_insert_with(|| Vec::new());
 
-/// Parses a string that represents a date. When a date
-/// is unable to be determined, return `None`. 
-fn flexible_date_parse(text: &str) -> Option<NaiveDate> {
-    let text = text.trim();
+            destinations.push((destination, cost));
 
-    // check that there are numbers
-    if !text.bytes().any(|x| x.is_ascii_digit()) {
-        return None;
-    } 
+            nodes.insert(source);
+            nodes.insert(destination);
+        }
 
-    // find the delimiter
-    let mut possible_delimiters = HashMap::new();
-    for c in text.chars() {
-        match c {
-            '/' | '-' | '.' | ' ' => {
-                let count = possible_delimiters.entry(c).or_insert(0);
-                *count += 1;
+        Graph {
+            edges: adjacency_list,
+            nodes,
+        }
+    }
+}
+
+#[derive(Clone, Eq, PartialEq)]
+struct Step {
+    cost: Cost,
+    position: Node,
+    history: Vec<Node>,
+}
+
+// Creating a priority queue from a `BinaryHeap` requires depends on `Ord`.
+// Explicitly implement the trait so the queue becomes a min-heap
+// instead of a max-heap.
+impl Ord for Step {
+    fn cmp(&self, other: &Self) -> Ordering {
+        other
+            .cost.cmp(&self.cost)
+            .then_with(|| self.position.cmp(&other.position)) // Necessary to retain consistency between `PartialEq` and `Ord`
+    }
+}
+
+impl PartialOrd for Step {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+fn shortest_path(g: &Graph, start: Node, goal: Node) -> Option<(Vec<Node>, Cost)> {
+    let mut dist: HashMap<Node, Cost> = g.nodes.iter().map(|&x| (x, usize::MAX)).collect();  
+    
+    // (0..g.edges.len())
+    //     .map(|_| usize::MAX) // use usize::MAX to represent infinity
+    //     .collect();
+
+    let mut priority_queue = BinaryHeap::new();
+
+    if let Some(cost) = dist.get_mut(&start){
+        // We're at `start`, so allocate that zero cost
+        *cost = 0;
+    }
+
+    priority_queue.push(Step { cost: 0, position: start, history: vec![] });
+
+    // Examine the frontier with lower cost nodes first (min-heap)
+    while let Some(Step { cost, position, mut history }) = priority_queue.pop() {
+        // Alternatively we could have continued to find all shortest paths
+        if position == goal {
+            history.push(goal);
+            return Some((history, cost)); 
+        }
+
+        // For each node we can reach, see if we can find a way with
+        // a lower cost going through this node
+        for &(next_destination, next_cost) in &g.edges[&position] {
+
+            // If so, add it to the frontier and continue
+            if next_cost < dist[&next_destination] {
+                let mut next = Step {
+                    position: next_destination,
+                    cost: cost + next_cost, 
+                    history: history.clone(),
+                };
+                next.history.push(position);
+                priority_queue.push(next);
+
+                if let Some(old_cost) = dist.get_mut(&next_destination){
+                    // We're at `start`, so allocate that zero cost
+                    *old_cost = next_cost;
+                }
             }
-            _ => (),
         }
     }
 
-    let delimiter = possible_delimiters
-        .iter()
-        .max_by(|x,y| (x.1).cmp(y.1))
-        .unwrap()
-        .0;
-
-    let fields: Vec<_> = text.split(*delimiter).collect();
-
-    let mut year = None;
-    let mut month = None;
-    let mut day = None;
-
-    for field in fields.iter() {
-        if field.len() < 3 {
-            continue;
-        }
-
-        let m = match &field.to_lowercase()[..3] {
-            "jan" => 1,
-            "feb" => 2,
-            "mar" => 3,
-            "apr" => 4,
-            "may" => 5,
-            "jun" => 6,
-            "jul" => 7,
-            "aug" => 8,
-            "sep" => 9,
-            "oct" => 10,
-            "nov" => 11,
-            "dec" => 12,
-            _ => continue,
-        };
-
-        month = Some(m)
-    }
-
-    for field in fields.iter() {
-        if is_year(field) {
-            year = field.parse::<i32>().ok();
-            continue;
-        }
-
-        if month.is_some() {
-            day = field.parse::<u32>().ok();
-        } else {
-            month = field.parse::<u32>().ok();
-        }
-
-    }
-
-    match (year, month, day) {
-        (Some(y), Some(m), None) => NaiveDate::from_ymd_opt(y, m, 1),
-        (Some(y), Some(m), Some(d)) => NaiveDate::from_ymd_opt(y, m, d),
-        _ => None,
-    }
+    // Goal not reachable
+    None
 }
 
 fn main() {
-    let dates = [
-        "2002 Feb 02",
-        "2010-12-11",
-        "1999/March/02",
-        "01.Mar.2021",
-        "Mar.05.2021",
-        "not a date",
+    let edge_list = vec![
+        (0, 1, 1),
+        (1, 2, 1),
+        (2, 1, 1),
+        (1, 3, 3),
+        (2, 3, 1),
+        (2, 4, 3),
+        (3, 5, 1),
+        (4, 5, 1),
+        (5, 6, 1),
+        (2, 6, 2),
     ];
-
-    for d in dates.iter() {
-        println!("{} -> {:?}", d, flexible_date_parse(d));
-    }
-
+    
+    let g = Graph::from_edge_list(&edge_list);
+    if let Some((path, cost)) = shortest_path(&g, 0, 6) {
+        println!("{}->{}, {:?} {}", 0, 6, path, cost);
+    };
 }
-
-#[test]
-fn ymd_hyphen() {
-    assert_eq!(flexible_date_parse("2010-12-11"), Some(NaiveDate::from_ymd(2010, 12, 11)))
-}
-
-#[test]
-fn ymd_slash() {
-    assert_eq!(flexible_date_parse("1999/Mar/02"), Some(NaiveDate::from_ymd(1999, 3, 2)))
-}
-
-#[test]
-fn dmy_dot() {
-    assert_eq!(flexible_date_parse("01.Mar.2021"), Some(NaiveDate::from_ymd(2021, 3, 1)))
-}
-
-#[test]
-fn mdy_dot() {
-    assert_eq!(flexible_date_parse("Apr.05.2021"), Some(NaiveDate::from_ymd(2021, 4, 5)))
-}
-
-#[test]
-fn invalid() {
-    assert_eq!(flexible_date_parse("not a date"), None)
-}
-
-
