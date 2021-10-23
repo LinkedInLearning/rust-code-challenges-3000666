@@ -15,9 +15,33 @@ trait MorseCode {
 }
 
 fn main() {
-    let greeting = "Hello, world".to_string().to_morse_code();
-    println!("{:?}", greeting)
+    let greeting = "Hello, world"
+        .to_string()
+        .to_morse_code();
+    
+    print_morse_code(&greeting);
 }
+
+
+impl std::fmt::Display for Pulse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Short => write!(f, "."), 
+            Self::Long => write!(f, "_"),
+        }
+    }
+}
+
+
+fn print_morse_code(msg: &Message) {
+    for letter in msg.iter()() {
+        for pulse in letter.iter() {
+            print!("{}", pulse);
+        }
+        print!(" ");
+    }
+    println!();
+} 
 
 #[test]
 fn hello_world() {
