@@ -32,9 +32,8 @@ impl std::fmt::Display for Pulse {
     }
 }
 
-
 fn print_morse_code(msg: &Message) {
-    for letter in msg.iter()() {
+    for letter in msg.iter() {
         for pulse in letter.iter() {
             print!("{}", pulse);
         }
