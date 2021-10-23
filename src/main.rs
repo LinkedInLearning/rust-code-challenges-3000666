@@ -28,7 +28,7 @@ impl MorseCode for String {
                 'E' | 'e' => vec![Short],
                 'F' | 'f' => vec![Short, Short, Long, Short],
                 'G' | 'g' => vec![Long, Long, Short],
-                'H' | 'h' => vec![Short, Short, Short, Short, Short],
+                'H' | 'h' => vec![Short, Short, Short, Short],
                 'I' | 'i' => vec![Short, Short],
                 'J' | 'j' => vec![Short, Long, Long, Long],
                 'K' | 'k' => vec![Long, Short, Long],
@@ -77,7 +77,7 @@ fn hello_world() {
     use Pulse::*;
 
     let expected = vec![
-        vec![Short, Short, Short, Short, Short],
+        vec![Short, Short, Short, Short],
         vec![Short],
         vec![Short, Long, Short, Short],
         vec![Short, Long, Short, Short],
