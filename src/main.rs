@@ -1,6 +1,4 @@
-// use time::{Date, Month, Instant, Duration};
-use chrono::{Duration, TimeZone};
-use chrono::{Date, Local};
+use chrono::{Date, Local, TimeZone};
 
 struct ImportantEvent {
     what: String,
@@ -24,14 +22,16 @@ fn main() {
     };
     
     if missed_christmas.is_passed() {
-        println!("oh well, maybe next year");
+        println!("Oh well, maybe get {} next year", missed_christmas.what);
     } else {
-        println!("☃︎");
+        println!("☃︎☃︎☃︎☃");
     }
 }
 
 #[test]
 fn in_past() {
+    use chrono::Duration;
+
     let event = ImportantEvent {
         what: String::from("friend's birthday"),
         when: Local::today() - Duration::hours(25),
@@ -42,6 +42,8 @@ fn in_past() {
 
 #[test]
 fn in_future() {
+    use chrono::Duration;
+
     let event = ImportantEvent {
         what: String::from("friend's birthday"),
         when: Local::today() + Duration::hours(25),
