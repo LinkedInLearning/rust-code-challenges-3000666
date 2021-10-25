@@ -1,5 +1,7 @@
 fn sum(numbers: Vec<Option<i32>>) -> i32 {
-    numbers.iter().map(|x| x.unwrap_or(0)).sum()
+    numbers.iter()
+    .map(|x| x.unwrap_or(0))
+    .sum()
 }
 
 fn main() {
