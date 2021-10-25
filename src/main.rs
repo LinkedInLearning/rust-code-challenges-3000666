@@ -56,23 +56,27 @@ impl std::fmt::Display for Isbn {
 fn calculate_check_digit(digits: &[u8]) -> u8 {
     const WEIGHTS: [u8; 12] = [1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3];
 
-    let check: u32 = digits
+    let weights_applied: u32 = digits
         .iter()
         .zip(WEIGHTS.iter())
         .map(|(&x, &y)| x * y)
         .map(|x| x as u32)
         .sum();
 
-    match 10 - (check % 10) {
+    let check_digit = 10 - (weights_applied % 10);
+
+    match check_digit {
         10 => 0_u8,
         m => m as u8,
     }
 }
 
 fn main() {
-    let rust_in_action: Isbn = "978-3-16-148410-0".parse().unwrap();
+    let rust_in_action: Isbn = "978-3-16-148410-0"
+        .parse()
+        .unwrap();
 
-    println!("Rust in Action's ISBN-13 ({})is valid!", rust_in_action);
+    println!("Rust in Action's ISBN-13 ({}) is valid!", rust_in_action);
 }
 
 #[test]
