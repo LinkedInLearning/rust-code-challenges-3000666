@@ -1,11 +1,5 @@
-use chrono::NaiveDate;
-
 fn weeks_between(a: &str, b: &str) -> i32 {
-    let t1 = NaiveDate::parse_from_str(a, "%Y-%m-%d").unwrap();
-    let t2 = NaiveDate::parse_from_str(b, "%Y-%m-%d").unwrap();
-    
-    let n_weeks = (t2 - t1).num_days() / 7;
-    n_weeks as i32
+    todo!()
 }
 
 fn main() {
