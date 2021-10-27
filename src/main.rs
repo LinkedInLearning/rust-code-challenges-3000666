@@ -1,11 +1,23 @@
 use std::path;
 
-trait Writeable {
+trait FileMetadata {
+    fn exists(&self) -> bool;
+
     fn is_writeable(&self) -> bool;
+
+    fn is_readable(&self) -> bool;
 }
 
-impl Writeable for path::Path {
+impl FileMetadata for path::Path {
+    fn is_readable(&self) -> bool {
+        todo!();
+    }
+
     fn is_writeable(&self) -> bool {
+        todo!();
+    }
+
+    fn exists(&self) -> bool {
         todo!();
     }
 }
