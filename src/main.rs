@@ -1,15 +1,27 @@
 use std::fs;
 use std::path;
 
-trait Writeable {
+trait FileMetadata {
+    fn exists(&self) -> bool;
+
     fn is_writeable(&self) -> bool;
+
+    fn is_readable(&self) -> bool;
 }
 
-impl Writeable for path::Path {
+impl FileMetadata for path::Path {
+    fn is_readable(&self) -> bool {
+        fs::File::open(self).is_ok()
+    }
+
     fn is_writeable(&self) -> bool {
         fs::metadata(self)
             .map(|m| !m.permissions().readonly())
             .unwrap_or(false)
+    }
+
+    fn exists(&self) -> bool {
+        self.exists()
     }
 }
 
