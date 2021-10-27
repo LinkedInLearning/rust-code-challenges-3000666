@@ -1,7 +1,7 @@
 {
-    "editor.fontSize": 24,
-    "terminal.integrated.fontSize": 22,
-    "editor.wrappingIndent": "indent",
-    "editor.wordWrapColumn": 60,
-    "editor.wordWrap": "bounded"
+    "editor.fontFamily": "'Source Code Pro', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+    "editor.fontSize": 26,
+    "editor.wordWrap": "on",
+    "terminal.integrated.lineHeight": 0.7,
+    "terminal.integrated.fontSize": 26
 }
