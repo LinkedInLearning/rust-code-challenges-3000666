@@ -1,4 +1,4 @@
-use chrono::{Local, NaiveDate, TimeZone};
+use chrono::NaiveDate;
 
 /// Parses a string that represents a date. When a date
 /// is unable to be determined, return `None`. 
