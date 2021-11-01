@@ -25,17 +25,17 @@ mod vigenere {
         String::from_utf8(encrypted).unwrap()
     }
 
-    pub fn decrypt(plaintext: &str, key: &str) -> String {
+    pub fn decrypt(ciphertext: &str, key: &str) -> String {
         let mut key_iter = key.bytes().map(|k| k - b'A').cycle();
 
-        let tmp = clean_input(plaintext)
+        let ciphertext = clean_input(ciphertext)
             .map(|x| {
                 let offset = key_iter.next().unwrap();
                 ((x + WRAP - A) - offset) % WRAP + A
             })
             .collect();
 
-        String::from_utf8(tmp).unwrap()
+        String::from_utf8(ciphertext).unwrap()
     }
 }
 
