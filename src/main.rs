@@ -1,9 +1,5 @@
 use std::cmp::Ordering;
 use std::collections::{BinaryHeap, HashMap, HashSet};
-use std::hash::Hash;
-
-// derived from the implementation provided at 
-// https://doc.rust-lang.org/alloc/collections/binary_heap/index.html
 
 type Node = usize;
 type Cost = usize;
@@ -43,14 +39,29 @@ struct Step {
     history: Vec<Node>,
 }
 
-// Creating a priority queue from a `BinaryHeap` requires depends on `Ord`.
-// Explicitly implement the trait so the queue becomes a min-heap
-// instead of a max-heap.
+impl Step {
+    fn new(position: Node, cost: Cost, history: Vec<Node>) -> Self {
+        Step {
+            cost,
+            position,
+            history,
+        }
+    }
+
+    fn from_start(start: Node) -> Self {
+        Step {
+            cost: 0,
+            position: start,
+            history: vec![],
+        }
+    }
+}
+
 impl Ord for Step {
     fn cmp(&self, other: &Self) -> Ordering {
         other
             .cost.cmp(&self.cost)
-            .then_with(|| self.position.cmp(&other.position)) // Necessary to retain consistency between `PartialEq` and `Ord`
+            .then_with(|| self.position.cmp(&other.position))
     }
 }
 
@@ -61,71 +72,57 @@ impl PartialOrd for Step {
 }
 
 fn shortest_path(g: &Graph, start: Node, goal: Node) -> Option<(Vec<Node>, Cost)> {
-    let mut dist: HashMap<Node, Cost> = g.nodes.iter().map(|&x| (x, usize::MAX)).collect();  
-    
-    // (0..g.edges.len())
-    //     .map(|_| usize::MAX) // use usize::MAX to represent infinity
-    //     .collect();
+    let mut dist: HashMap<Node, Cost> = g.nodes
+        .iter()
+        .map(|&x| if x == start { (x, 0)} else { (x, usize::MAX)} )
+        .collect();  
 
     let mut priority_queue = BinaryHeap::new();
 
-    if let Some(cost) = dist.get_mut(&start){
-        // We're at `start`, so allocate that zero cost
-        *cost = 0;
-    }
+    priority_queue.push(Step::from_start(start));
 
-    priority_queue.push(Step { cost: 0, position: start, history: vec![] });
-
-    // Examine the frontier with lower cost nodes first (min-heap)
     while let Some(Step { cost, position, mut history }) = priority_queue.pop() {
-        // Alternatively we could have continued to find all shortest paths
         if position == goal {
             history.push(goal);
             return Some((history, cost)); 
         }
 
-        // For each node we can reach, see if we can find a way with
-        // a lower cost going through this node
-        for &(next_destination, next_cost) in &g.edges[&position] {
+        if let Some(destinations) = &g.edges.get(&position) {
+            for &(next_destination, next_cost) in destinations.iter() {
 
-            // If so, add it to the frontier and continue
-            if next_cost < dist[&next_destination] {
-                let mut next = Step {
-                    position: next_destination,
-                    cost: cost + next_cost, 
-                    history: history.clone(),
-                };
-                next.history.push(position);
-                priority_queue.push(next);
-
-                if let Some(old_cost) = dist.get_mut(&next_destination){
-                    // We're at `start`, so allocate that zero cost
-                    *old_cost = next_cost;
+                if next_cost < dist[&next_destination] {
+                    let mut next = Step::new(next_destination, cost + next_cost, history.clone());
+                    next.history.push(position);
+                    priority_queue.push(next);
+    
+                    if let Some(old_cost) = dist.get_mut(&next_destination){
+                        *old_cost = next_cost;
+                    }
                 }
             }
         }
+        
     }
 
-    // Goal not reachable
     None
 }
 
 fn main() {
-    let edge_list = vec![
-        (0, 1, 1),
-        (1, 2, 1),
-        (2, 1, 1),
-        (1, 3, 3),
-        (2, 3, 1),
-        (2, 4, 3),
-        (3, 5, 1),
-        (4, 5, 1),
-        (5, 6, 1),
-        (2, 6, 2),
-    ];
-    
+    let edge_list = include!("large_graph.in");
     let g = Graph::from_edge_list(&edge_list);
-    if let Some((path, cost)) = shortest_path(&g, 0, 6) {
-        println!("{}->{}, {:?} {}", 0, 6, path, cost);
+
+    if let Some((path, cost)) = shortest_path(
+            &g, 1000, 9000) {
+        println!("1000->9000, {:?} {}", path, cost);
     };
+}
+
+#[test]
+fn large_graph() {
+    let edge_list = include!("large_graph.in");
+    let g = Graph::from_edge_list(&edge_list);
+
+    let path = shortest_path(&g, 1000, 9000);
+    assert!(path.is_some());
+    assert_eq!(path.unwrap().1, 24); 
 }
