@@ -1,43 +1,52 @@
-use std::cmp::Ordering;
-use std::collections::{BinaryHeap, HashMap, HashSet};
-use std::hash::Hash;
+mod vigenere {
+    const ALPHABET: [u8; 26] = *b"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const A: u8 = b'A';
+    const Z: u8 = b'Z';
+    const WRAP: u8 = 26; // ALPHABET.len() as u8
 
-// derived from the implementation provided at 
-// https://doc.rust-lang.org/alloc/collections/binary_heap/index.html
+    fn clean_input(input: &str) -> impl Iterator<Item = u8> + '_ {
+        input.bytes().filter_map(|x| match x {
+            A..=Z => Some(x),
+            b'a'..=b'z' => Some(x - (b'a' - A)),
+            _ => None,
+        })
+    }
 
-type Node = usize;
-type Cost = usize;
+    pub fn encrypt(plaintext: &str, key: &str) -> String {
+        let mut key_iter = key.bytes().map(|k| k - A).cycle();
 
-struct Graph {
-    /* TODO: design data structure */
-}
+        let encrypted = clean_input(plaintext)
+            .map(|x| {
+                let offset = key_iter.next().unwrap();
+                ((x - A) + offset) % WRAP + A
+            })
+            .collect();
 
-impl Graph {
-    fn from_edge_list(edge_list: &Vec<(Node, Node, Cost)>) -> Self {
-        todo!()
+        String::from_utf8(encrypted).unwrap()
+    }
+
+    pub fn decrypt(plaintext: &str, key: &str) -> String {
+        let mut key_iter = key.bytes().map(|k| k - b'A').cycle();
+
+        let tmp = clean_input(plaintext)
+            .map(|x| {
+                let offset = key_iter.next().unwrap();
+                ((x + WRAP - A) - offset) % WRAP + A
+            })
+            .collect();
+
+        String::from_utf8(tmp).unwrap()
     }
 }
 
-fn shortest_path(g: &Graph, start: Node, goal: Node) -> Option<(Vec<Node>, Cost)> {
-    todo!();
-}
-
 fn main() {
-    let edge_list = vec![
-        (0, 1, 1),
-        (1, 2, 1),
-        (2, 1, 1),
-        (1, 3, 3),
-        (2, 3, 1),
-        (2, 4, 3),
-        (3, 5, 1),
-        (4, 5, 1),
-        (5, 6, 1),
-        (2, 6, 2),
-    ];
-    
-    let g = Graph::from_edge_list(&edge_list);
-    if let Some((path, cost)) = shortest_path(&g, 0, 6) {
-        println!("{}->{}, {:?} {}", 0, 6, path, cost);
-    };
+    let key = "WHYRUST";
+    let ciphertext = "
+    PVCDJG
+    PAYCMY
+    JRKUC
+    ";
+    let plaintext = vigenere::decrypt(&ciphertext, key);
+
+    println!("{}", plaintext);
 }

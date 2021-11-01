@@ -1,7 +1,7 @@
-# Rust Code Challenges: Challenge 16
+# Rust Code Challenges: Challenge 17
 
-Given a list of distances between cities, e.g. A -> B 50, B -> C 10,
-calculate the shortest route between two points, e.g. A and C.
+We need to decrypt a secret message. The message has been encrypted
+using a Vigenère cipher.
 
 ## Testing your solution
 
