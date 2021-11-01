@@ -3,7 +3,7 @@ mod vigenere {
         String::new() // Optional
     }
 
-    pub fn decrypt(plaintext: &str, key: &str) -> String {
+    pub fn decrypt(ciphertext: &str, key: &str) -> String {
         todo!()
     }
 }
