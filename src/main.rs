@@ -46,7 +46,7 @@ fn hello_world() {
     use Pulse::*;
 
     let expected = vec![
-        vec![Short, Short, Short, Short, Short],
+        vec![Short, Short, Short, Short],
         vec![Short],
         vec![Short, Long, Short, Short],
         vec![Short, Long, Short, Short],
