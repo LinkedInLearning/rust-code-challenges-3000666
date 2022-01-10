@@ -51,16 +51,6 @@ impl std::fmt::Display for Pulse {
     }
 }
 
-fn print_morse_code(msg: &Message) {
-    for letter in msg.iter() {
-        for pulse in letter.iter() {
-            print!("{}", pulse);
-        }
-        print!(" ");
-    }
-    println!();
-} 
-
 #[test]
 fn hello_world() {
     use Pulse::*;
