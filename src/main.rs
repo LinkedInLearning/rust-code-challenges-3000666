@@ -1,11 +1,8 @@
 use chrono::{Local, NaiveDate, TimeZone};
-use std::collections::HashMap;
 
 fn is_year(field: &str) -> bool {
     field.len() == 4 && field.chars().all(|x| x.is_ascii_digit())
 }
-
-
 
 /// Parses a string that represents a date. When a date
 /// is unable to be determined, return `None`. 
@@ -17,25 +14,10 @@ fn flexible_date_parse(text: &str) -> Option<NaiveDate> {
         return None;
     } 
 
-    // find the delimiter
-    let mut possible_delimiters = HashMap::new();
-    for c in text.chars() {
-        match c {
-            '/' | '-' | '.' | ' ' => {
-                let count = possible_delimiters.entry(c).or_insert(0);
-                *count += 1;
-            }
-            _ => (),
-        }
-    }
-
-    let delimiter = possible_delimiters
-        .iter()
-        .max_by(|x,y| (x.1).cmp(y.1))
-        .unwrap()
-        .0;
-
-    let fields: Vec<_> = text.split(*delimiter).collect();
+    // allow any known delimiter
+    let fields: Vec<_> = text
+        .split(['/', '-', '.', ' '].as_slice())
+        .collect();
 
     let mut year = None;
     let mut month = None;
@@ -126,5 +108,3 @@ fn mdy_dot() {
 fn invalid() {
     assert_eq!(flexible_date_parse("not a date"), None)
 }
-
-
