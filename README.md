@@ -1,7 +1,12 @@
 # Rust Code Challenges
-This is the repository for the LinkedIn Learning course `Rust Code Challenges`. The full course is available from [LinkedIn Learning][lil-course-url].
+This is the repository for the LinkedIn Learning course Rust Code Challenges. The full course is available from [LinkedIn Learning][lil-course-url].
 
-_See the readme file in the main branch for updated instructions and information._
+![Rust Code Challenges][lil-thumbnail-url] 
+
+It will take time—and a whole lot of practice—to improve your Rust coding skills. It’s important to push yourself with new challenges, which is exactly what this course is for. Join author and instructor Tim McNamara as he takes you through a series of coding challenges, testing your ability to perform certain functions so you can reach the next level with Rust.
+
+Acquire new Rust skills with exercises that start off simple and become progressively more difficult. Learn how to write better, faster, and more reliable code when you need it. Find out why Rust is taking over the industry, offering an efficient and secure alternative to many other programming languages. By the end of this course, you will have a new list of skills that you can continue to practice and develop moving forward. Are you up for the challenge?
+
 ## Instructions
 This repository has branches for each of the videos in the course. You can use the branch pop up menu in github to switch to a specific branch and take a look at the course at that stage, or you can add `/tree/BRANCH_NAME` to the URL to go to the branch you want to access.
 
@@ -27,8 +32,15 @@ To resolve this issue:
 3. [Course-specific instructions]
 
 
-[0]: # (Replace these placeholder URLs with actual course URLs)
+### Instructor
 
-[lil-course-url]: https://www.linkedin.com/learning/
-[lil-thumbnail-url]: http://
+Tim McNamara 
+                            
+Author, Software Architect
 
+                            
+
+Check out my other courses on [LinkedIn Learning](https://www.linkedin.com/learning/instructors/tim-mcnamara).
+
+[lil-course-url]: https://www.linkedin.com/learning/rust-code-challenges
+[lil-thumbnail-url]: https://cdn.lynda.com/course/3000666/3000666-1644518448835-16x9.jpg
