@@ -46,9 +46,9 @@ impl FromStr for Rgb {
             let r = u8::from_str_radix(&hex[0..2], 16)
                 .or_else(|_| Err(ParseColorError::RedOutOfBounds))?;
             let g = u8::from_str_radix(&hex[2..4], 16)
-                .or_else(|_| Err(ParseColorError::BlueOutOfBounds))?;
-            let b = u8::from_str_radix(&hex[4..6], 16)
                 .or_else(|_| Err(ParseColorError::GreenOutOfBounds))?;
+            let b = u8::from_str_radix(&hex[4..6], 16)
+                .or_else(|_| Err(ParseColorError::BlueOutOfBounds))?;
 
             Ok(Rgb { r, g, b })
         } else {
